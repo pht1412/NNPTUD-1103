@@ -1,14 +1,11 @@
 var express = require('express');
 var router = express.Router();
-let userModel = require('../schemas/users')
+let roleModel = require('../schemas/roles')
 
-/* GET users listing. */
+/* GET roles listing. */
 router.get('/', async function (req, res, next) {
-  let result = await userModel.find({
+  let result = await roleModel.find({
     isDeleted: false
-  }).populate({
-    path: 'role',
-    select: 'name'
   })
   res.send(result);
 });
@@ -16,7 +13,7 @@ router.get('/', async function (req, res, next) {
 router.get('/:id', async function (req, res, next) {
   try {
     let id = req.params.id;
-    let result = await userModel.findById(id);
+    let result = await roleModel.findById(id);
     if (!result || result.isDeleted) {
       res.status(404).send({
         message: "ID NOT FOUND"
@@ -32,22 +29,18 @@ router.get('/:id', async function (req, res, next) {
 });
 
 router.post('/', async function (req, res, next) {
-  let newUser = new userModel({
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-    fullName: req.body.fullName,
-    avatarUrl: req.body.avatarUrl,
-    role: req.body.role
+  let newRole = new roleModel({
+    name: req.body.name,
+    description: req.body.description
   })
-  await newUser.save();
-  res.send(newUser)
+  await newRole.save();
+  res.send(newRole)
 })
 
 router.put('/:id', async function (req, res, next) {
   try {
     let id = req.params.id;
-    let result = await userModel.findByIdAndUpdate(
+    let result = await roleModel.findByIdAndUpdate(
       id, req.body, {
       new: true
     })
@@ -60,7 +53,7 @@ router.put('/:id', async function (req, res, next) {
 router.delete('/:id', async function (req, res, next) {
   try {
     let id = req.params.id;
-    let result = await userModel.findById(id);
+    let result = await roleModel.findById(id);
     if (!result || result.isDeleted) {
       res.status(404).send({
         message: "ID NOT FOUND"
@@ -77,28 +70,16 @@ router.delete('/:id', async function (req, res, next) {
   }
 })
 
-router.post('/enable', async function (req, res, next) {
-  let result = await userModel.findOneAndUpdate({
-    username: req.body.username,
-    email: req.body.email
-  }, {
-    status: true
-  }, {
-    new: true
+router.get('/:id/users', async function (req, res, next) {
+  let userModel = require('../schemas/users')
+  let result = await userModel.find({
+    role: req.params.id,
+    isDeleted: false
+  }).populate({
+    path: 'role',
+    select: 'name'
   })
-  res.send(result)
-})
-
-router.post('/disable', async function (req, res, next) {
-  let result = await userModel.findOneAndUpdate({
-    username: req.body.username,
-    email: req.body.email
-  }, {
-    status: false
-  }, {
-    new: true
-  })
-  res.send(result)
-})
+  res.send(result);
+});
 
 module.exports = router;
