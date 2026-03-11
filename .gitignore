@@ -26,6 +26,7 @@ coverage
 .nyc_output
 
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
 # Bower dependency directory (https://bower.io/)
@@ -46,6 +47,8 @@ web_modules/
 
 # TypeScript cache
 *.tsbuildinfo
+# Typescript v1 declaration files
+typings/
 
 # Optional npm cache directory
 .npm
@@ -53,9 +56,12 @@ web_modules/
 # Optional eslint cache
 .eslintcache
 
+<<<<<<< HEAD
 # Optional stylelint cache
 .stylelintcache
 
+=======
+>>>>>>> 20260311
 # Optional REPL history
 .node_repl_history
 
@@ -65,6 +71,7 @@ web_modules/
 # Yarn Integrity file
 .yarn-integrity
 
+<<<<<<< HEAD
 # dotenv environment variable files
 .env
 .env.*
@@ -137,3 +144,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+=======
+# dotenv environment variables file
+.env
+
+# next.js build output
+.next
+>>>>>>> 20260311
